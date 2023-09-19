@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/score")
-@CrossOrigin(origins = "http://localhost:63342")
+@CrossOrigin(origins = "*")
 public class ScoreController {
 
     private ScoreService scoreService;
