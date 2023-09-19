@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scrabble.api.dto.*;
 import com.scrabble.api.enums.ResponseStatus;
 import com.scrabble.api.entity.ScoreHistory;
+import com.scrabble.api.exception.ApiException;
+import com.scrabble.api.exception.UserInputValidationException;
 import com.scrabble.api.repository.ScoreHistoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -74,16 +75,16 @@ public class ScoreService {
                     .score(score.getScore())
                     .build();
 
+        } catch (UserInputValidationException e) {
+
+            throw new UserInputValidationException(e.getMessage());
+
         } catch (Exception e) {
             log.info("Failed to saved the score for the word: \"{}\" error: {}",
                     saveScoreRequestDto.getWord(), e.getMessage());
             e.printStackTrace();
 
-            return SaveScoreResponseDto.builder()
-                    .status(ResponseStatus.ERROR)
-                    .message(e.getMessage())
-                    .word(saveScoreRequestDto.getWord())
-                    .build();
+            throw new ApiException("Please try again later.");
         }
     }
 
@@ -119,17 +120,17 @@ public class ScoreService {
         }
     }
 
-    private String processAndValidateWord(String word) throws Exception {
+    private String processAndValidateWord(String word) throws UserInputValidationException {
         if(!StringUtils.hasLength(word)) {
-            throw new Exception("Word can not be null or empty.");
+            throw new UserInputValidationException("Word can not be null or empty.");
         }
         word = word.trim();
         word = word.toUpperCase();
         if(word.length() < 1) {
-            throw new Exception("Word must have at least one character.");
+            throw new UserInputValidationException("Word must have at least one character.");
         }
         if(word.contains(" ")) {
-            throw new Exception("Word can not contain spaces.");
+            throw new UserInputValidationException("Word can not contain spaces.");
         }
         return word;
     }
