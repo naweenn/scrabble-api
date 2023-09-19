@@ -2,6 +2,7 @@ package com.scrabble.api.controller;
 
 import com.scrabble.api.dto.*;
 import com.scrabble.api.service.ScoreService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ScoreController {
     }
 
     @PostMapping
-    public ResponseEntity<SaveScoreResponseDto> saveScore(@RequestBody SaveScoreRequestDto saveScoreRequestDto) {
+    public ResponseEntity<SaveScoreResponseDto> saveScore(@Valid @RequestBody SaveScoreRequestDto saveScoreRequestDto) {
         return ResponseEntity.ok(scoreService.saveScore(saveScoreRequestDto));
     }
 
