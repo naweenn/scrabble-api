@@ -3,32 +3,30 @@ package com.scrabble.api.controller;
 import com.scrabble.api.dto.*;
 import com.scrabble.api.service.ScoreService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/score")
+@RequestMapping("/api")
 public class ScoreController {
 
     private ScoreService scoreService;
 
-    @Autowired
     public ScoreController(ScoreService scoreService) {
         this.scoreService = scoreService;
     }
 
-    @GetMapping("/rules")
+    @GetMapping("/score/rules")
     public ResponseEntity<ScoringRuleResponseDto> getScoringRules() {
         return ResponseEntity.ok(scoreService.getScoringRules());
     }
 
-    @PostMapping
+    @PostMapping("/score")
     public ResponseEntity<SaveScoreResponseDto> saveScore(@Valid @RequestBody SaveScoreRequestDto saveScoreRequestDto) {
         return ResponseEntity.ok(scoreService.saveScore(saveScoreRequestDto));
     }
 
-    @GetMapping("/top-scores")
+    @GetMapping("/score/top-scores")
     public ResponseEntity<TopScoresResponseDto> getTopScores() {
         return ResponseEntity.ok(scoreService.getTopScores());
     }

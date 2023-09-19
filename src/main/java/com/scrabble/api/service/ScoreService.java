@@ -27,7 +27,6 @@ public class ScoreService {
 
     private ScoreHistoryRepository scoreHistoryRepository;
 
-    @Autowired
     public ScoreService(ScoreHistoryRepository scoreHistoryRepository) {
         this.scoreHistoryRepository = scoreHistoryRepository;
     }
